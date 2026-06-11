@@ -1,6 +1,9 @@
 # neurodiversidad-app-front
 
-mi-proyecto-preescolar/
+## Estructura de carpetas/archivos
+
+```plaintext
+frontend/
 ├── public/                  # Archivos estáticos puros (Audio de victoria, PDFs de los templates)
 │   ├── audio/               # sonidos de éxito, error, música de fondo
 │   └── templates/           # PDFs descargables para los docentes (las paletas)
@@ -24,3 +27,17 @@ mi-proyecto-preescolar/
 │       └── leccion/         # Carpeta especial para las lecciones
 │           └── [id].astro   # Ruta dinámica para cargar cada lección con su slider horizontal
 └── astro.config.mjs         # Configuración de Astro
+```
+
+## Tecnologías/librerias utilizadas
+
+- **Astro**: Framework moderno para construir sitios web rápidos y optimizados. Permite usar componentes de React, Vue, Svelte, etc., pero en este proyecto nos enfocamos en Astro puro para mantenerlo ligero.
+- **Tailwind CSS**: Framework de CSS utilitario para estilos rápidos y responsivos.
+- **Vite**: Herramienta de construcción rápida que viene integrada con Astro para un desarrollo ágil.
+- **Supabase**: Plataforma de backend que nos permite gestionar la autenticación, la base de datos y las funciones serverless.
+- **GSAP**: Biblioteca de animación para crear transiciones suaves y efectos visuales atractivos en las lecciones.
+- **Howler.js**: Biblioteca para manejar los sonidos de victoria, error y música de fondo de manera sencilla.
+- **Lucide**: Biblioteca de íconos SVG que se pueden personalizar fácilmente para adaptarse al estilo colorido y amigable del proyecto.
+- **Lottie-web**: Para animaciones vectoriales ligeras y de alta calidad, perfectas para los avatares y efectos visuales en las lecciones.
+
+## Descripción general del proyecto

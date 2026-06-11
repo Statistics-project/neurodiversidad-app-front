@@ -1,0 +1,10 @@
+# Dependencias instaladas (No subir a GitHub)
+node_modules/
+
+# Archivos de producción y caché
+dist/
+.astro/
+
+# Archivos secretos (Aquí guardarán las contraseñas de Supabase luego)
+.env
+.env.*
