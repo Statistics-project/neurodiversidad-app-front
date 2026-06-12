@@ -1,0 +1,100 @@
+---
+// src/pages/login.astro
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="CapyLearn - Iniciar Sesión">
+  <main class="relative min-h-screen flex items-center justify-center p-4">
+    <!-- FONDO CON BLUR -->
+    <div
+      class="fixed inset-0 z-0 bg-[url('/background-paisaje1.jpeg')] bg-cover bg-center opacity-100 blur-[4px] scale-105"
+    >
+    </div>
+
+    <!-- ELEMENTOS DECORATIVOS -->
+    <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+      <div
+        class="absolute top-20 left-10 w-32 h-32 bg-white/20 rounded-full blur-3xl animate-pulse"
+      >
+      </div>
+      <div
+        class="absolute bottom-40 right-10 w-64 h-64 bg-yellow-400/10 rounded-full blur-3xl"
+      >
+      </div>
+    </div>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <div class="relative z-10 w-full max-w-md">
+      <!-- TARJETA DE LOGIN -->
+      <div class="bg-white border-8 border-black rounded-[3rem] shadow-[12px_12px_0_0_#000] p-8 lg:p-10 flex flex-col gap-6 text-center transition-all hover:shadow-[16px_16px_0_0_#000]">
+        
+        <!-- Título -->
+        <h1 class="text-4xl sm:text-5xl font-black text-black uppercase tracking-tighter drop-shadow-[0_2px_0_rgba(0,0,0,0.2)]">
+          ¡Hola <span class="text-[#4361EE]">Amigo</span>!
+        </h1>
+        <p class="text-lg font-bold text-gray-700 mt-[-10px]">
+          ¿Listo/a para jugar y aprender?
+        </p>
+        
+        <form class="flex flex-col gap-5 mt-2" onsubmit="event.preventDefault(); window.location.href='/dashboard';">
+          <!-- Correo -->
+          <div class="text-left">
+            <label class="block text-black font-black uppercase text-sm mb-2 ml-2" for="email">
+              Tu Correo Mágico
+            </label>
+            <input 
+              type="email" 
+              id="email" 
+              class="w-full border-4 border-black rounded-2xl px-4 py-3 text-lg font-bold focus:outline-none focus:ring-4 focus:ring-[#4361EE]/50 focus:border-black transition-all shadow-[4px_4px_0_0_#000] hover:-translate-y-1 hover:shadow-[6px_6px_0_0_#000]"
+              placeholder="ejemplo@correo.com"
+            />
+          </div>
+
+          <!-- Contraseña -->
+          <div class="text-left">
+            <label class="block text-black font-black uppercase text-sm mb-2 ml-2" for="password">
+              Palabra Secreta
+            </label>
+            <input 
+              type="password" 
+              id="password" 
+              class="w-full border-4 border-black rounded-2xl px-4 py-3 text-lg font-bold focus:outline-none focus:ring-4 focus:ring-[#4361EE]/50 focus:border-black transition-all shadow-[4px_4px_0_0_#000] hover:-translate-y-1 hover:shadow-[6px_6px_0_0_#000]"
+              placeholder="••••••••"
+            />
+          </div>
+
+          <!-- Botón de Iniciar Sesión -->
+          <button 
+            type="submit"
+            class="mt-4 bg-[#FFD166] hover:bg-[#FFC436] text-black border-4 border-black px-6 py-4 rounded-2xl shadow-[6px_6px_0_0_#000] transform transition-transform hover:-translate-y-1 hover:shadow-[8px_8px_0_0_#000] active:translate-y-1 active:shadow-[2px_2px_0_0_#000] font-black uppercase tracking-widest text-lg"
+          >
+            ¡Entrar a jugar!
+          </button>
+        </form>
+
+        <!-- No tienes cuenta -->
+        <p class="text-black font-bold text-sm">
+          ¿No tienes cuenta? 
+          <a href="/register" class="text-[#EF476F] hover:text-[#D90429] hover:underline underline-offset-4 font-black transition-colors">
+            ¡Regístrate aquí!
+          </a>
+        </p>
+
+        <!-- Separador -->
+        <div class="flex items-center gap-4 my-1">
+          <div class="flex-1 border-b-4 border-black rounded-full opacity-50"></div>
+          <span class="text-black font-black uppercase text-sm opacity-50">O</span>
+          <div class="flex-1 border-b-4 border-black rounded-full opacity-50"></div>
+        </div>
+
+        <!-- Botón de Invitado -->
+        <a 
+          href="/dashboard"
+          class="block bg-[#06D6A0] hover:bg-[#05C493] text-black border-4 border-black px-6 py-4 rounded-2xl shadow-[6px_6px_0_0_#000] transform transition-transform hover:-translate-y-1 hover:shadow-[8px_8px_0_0_#000] active:translate-y-1 active:shadow-[2px_2px_0_0_#000] font-black uppercase tracking-widest text-base"
+        >
+          Acceder como invitado
+        </a>
+      </div>
+    </div>
+  </main>
+</BaseLayout>
