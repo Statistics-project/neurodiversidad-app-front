@@ -14,6 +14,8 @@ interface Props {
 
 const { section } = Astro.props;
 
+import Cohete from "../../components/cohete1.astro";
+
 /**
  * CLASES DINÁMICAS:
  * Construye las clases de Tailwind usando el 'theme' de la sección.
@@ -46,6 +48,13 @@ const themeClasses = {
       alt={section.title}
       class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
     />
+
+    <!-- COMPONENTE FLOTANTE: Solo para astronomía, centrado sobre la imagen -->
+    {section.theme === 'astronomia' && (
+      <div class="absolute inset-0 flex items-center justify-center transition-transform duration-700 group-hover:scale-110 scale-75 pb-16 pointer-events-none">
+        <Cohete />
+      </div>
+    )}
 
     <!-- BOTÓN "EXPLORAR": Flota sobre la imagen como un sticker físico. -->
     <div
