@@ -1,25 +1,22 @@
-/* 1. Importamos Tailwind */
+/* src/styles/global.css */
+
+/* 1. Importación nativa de Tailwind v4: Carga todas las utilidades base del framework. */
 @import "tailwindcss";
 
-/* 2. Tokens de Diseño para Preescolar / Videobeam */
-:root {
-  /* Colores de alto contraste (Evitar pasteles lavados por la luz del proyector) */
-  --color-principal-divertido: #FF5A5F; /* Un rojo/coral vibrante estilo Duolingo */
-  --color-fondo-aula: #F0FDF4;          /* Un verde menta súper claro pero distinguible */
-  --color-correcto: #22C55E;            /* Verde brillante para aciertos */
-  --color-error: #EF4444;               /* Rojo vivo para advertencias o fallos */
-  --color-texto-oscuro: #1E293B;        /* Azul pizarra oscuro (se lee mejor que el negro puro) */
+/* 2. Importación de tokens de diseño: Aquí residen nuestras variables de color y sombras personalizadas. */
+@import "./token.css";
 
-  /* Fuentes Gigantes para que se lean desde la última fila del salón */
-  --fuente-titulo-proyector: 'Fredoka One', 'Comic Sans MS', sans-serif; /* Fuentes amigables */
-  --text-gigante-aula: 3.5rem;          /* Para las preguntas principales */
-  --text-boton-paleta: 2rem;            /* Para los botones que el maestro clickeará rápido */
-}
+/* 3. Importación de la tipografía: Usamos Fredoka por ser redondeada y amigable para niños. */
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700;900&display=swap');
 
-/* Estilos base por defecto para el proyecto */
+/* 4. Ajustes globales de UX:
+   - -webkit-tap-highlight-color: Elimina el cuadro gris molesto al tocar en móviles.
+   - overflow-x: hidden: Evita que la pantalla se mueva hacia los lados.
+   - user-select: none: Evita que los niños seleccionen texto por error al jugar/interactuar, 
+     lo que mantiene la experiencia limpia como una aplicación nativa.
+*/
 body {
-  background-color: var(--color-fondo-aula);
-  color: var(--color-texto-oscuro);
-  font-family: var(--fuente-titulo-proyector);
-  overflow-x: hidden; /* Evita scrolls raros durante las animaciones de teatro */
+  -webkit-tap-highlight-color: transparent;
+  overflow-x: hidden;
+  user-select: none; /* Evita que los niños seleccionen texto por accidente jugando */
 }

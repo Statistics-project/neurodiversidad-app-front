@@ -1,0 +1,89 @@
+---
+// src/pages/dashboard.astro
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SectionCard from "../layouts/SectionCard.astro";
+
+/**
+ * DATA DE SECCIONES:
+ * Para agregar un nuevo mundo (ej. Geografía), añade un objeto más a este array.
+ * Asegúrate de que el 'theme' coincida con los definidos en token.css.
+ */
+interface Section {
+  id: string;
+  title: string;
+  icon: string;
+  image: string;
+  theme: "astronomia" | "paleontologia" | "biologia";
+}
+
+const sections: Section[] = [
+  {
+    id: "astronomia",
+    title: "ASTRONOMÍA",
+    icon: "rocket",
+    image: "astronomy-sectioncard.webp",
+    theme: "astronomia",
+  },
+  {
+    id: "paleontologia",
+    title: "",
+    icon: "bone",
+    image: "dino-sectioncard.webp",
+    theme: "paleontologia",
+  },
+  {
+    id: "biologia",
+    title: "BIOLOGÍA",
+    icon: "microscope",
+    image: "science-sectioncard.webp",
+    theme: "biologia",
+  },
+];
+---
+
+<BaseLayout title="CapyLearn - Dashboard">
+  <main class="relative min-h-screen">
+    <!-- FONDO CON BLUR: 
+         Añadimos 'blur-[4px]' y un ligero 'scale-105' para evitar bordes blancos por el desenfoque.
+    -->
+    <div
+      class="fixed inset-0 z-0 bg-[url('/background-paisaje1.jpeg')] bg-cover bg-center opacity-100 blur-[4px] scale-105"
+    >
+    </div>
+
+    <!-- ELEMENTOS DECORATIVOS: Para quitar la sensación de "simple" -->
+    <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+      <div
+        class="absolute top-20 left-10 w-32 h-32 bg-white/20 rounded-full blur-3xl animate-pulse"
+      >
+      </div>
+      <div
+        class="absolute bottom-40 right-10 w-64 h-64 bg-yellow-400/10 rounded-full blur-3xl"
+      >
+      </div>
+      <!-- Puedes añadir SVGs de nubes o estrellas aquí para más estilo Kurzgesagt -->
+    </div>
+
+    <!-- CONTENIDO PRINCIPAL: relative z-10 para estar por encima del fondo -->
+    <div class="relative z-10 max-w-7xl mx-auto p-8 lg:p-12">
+      <header class="mb-8 text-center">
+        <!-- Títulos con Drop Shadow sólido para legibilidad sobre fondo de imagen -->
+        <h1
+          class="text-7xl font-black text-white uppercase tracking-tighter drop-shadow-[0_5px_0_rgba(0,0,0,1)]"
+        >
+          Tu Mapa de <span class="text-[#4361EE]">Aventura</span>
+        </h1>
+        <p
+          class="text-2xl font-bold text-white mt-4 drop-shadow-[0_2px_0_rgba(0,0,0,1)]"
+        >
+          ¿Qué mundo vamos a explorar hoy?
+        </p>
+      </header>
+
+      <!-- GRID DE TARJETAS: Responsive (1 col en móvil, 3 en escritorio) -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        {sections.map((section) => <SectionCard section={section} />)}
+      </div>
+    </div>
+  </main>
+</BaseLayout>
