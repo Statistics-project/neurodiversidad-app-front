@@ -1,0 +1,15 @@
+---
+interface Props {
+  boardImage: string;
+}
+
+const { boardImage } = Astro.props;
+---
+
+<div class="relative z-20 w-full h-[20vh] md:h-[25vh] flex justify-center items-center overflow-hidden">
+  <img 
+    src={boardImage} 
+    alt="HUD" 
+    class="w-full h-full object-contain object-bottom"
+  />
+</div>

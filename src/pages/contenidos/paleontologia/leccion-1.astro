@@ -1,0 +1,42 @@
+---
+import LessonBoard from "../../../components/LessonBoard.astro";
+
+// Importas los assets ESPECÍFICOS de este tema
+import bgPaleo from "/src/assets/dino-background.webp";
+import boardPaleo from "/src/assets/iconos-mapa-dinosaurios/dino-board.webp";
+---
+
+<html lang="es" class="h-full w-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  </head>
+  
+  <body class="fixed inset-0 m-0 p-0 overflow-hidden bg-black font-sans">
+    
+    {/* Contenedor Flex que ocupa 100% de la pantalla */}
+    <div class="relative w-full h-full flex flex-col">
+      
+      {/* Fondo (Parallax/Imagen) */}
+      <div 
+        class="absolute inset-0 z-0 bg-cover bg-center"
+        style={`background-image: url('${bgPaleo.src}');`}
+      ></div>
+
+      {/* Main (Contenido de la lección) */}
+      <main class="relative z-10 flex-1 w-full flex items-center justify-center">
+        
+        {/* TODO LO QUE PONGAS AQUÍ APARECERÁ EN EL CENTRO DE LA PANTALLA */}
+        {/* Aquí irá tu efecto parallax y el marco de piedra */}
+        
+        <div class="w-full aspect-[16/9] bg-white/20 rounded-3xl border-8 border-gray-400 flex items-center justify-center backdrop-blur-sm">
+            <h1 class="text-4xl text-white font-bold">Aquí va el contenido Parallax</h1>
+        </div>
+      </main>
+
+      {/* Tablero HUD */}
+      <LessonBoard boardImage={boardPaleo.src} />
+
+    </div>
+  </body>
+</html>

@@ -1,0 +1,45 @@
+---
+// src/layouts/GameLayout.astro
+interface Props {
+  title?: string; // Título que se mostrará en la barra superior, opcional porque el SpaceTopBar ya tiene un título por defecto
+  backUrl?: string; // Ruta a la que regresará el botón de volver
+  themeColor?: string; // Color de fondo para la barra superior, opcional con un valor por defecto
+}
+
+const { title = "CapyLearn - Lección", backUrl = "/dashboard", themeColor } = Astro.props;
+
+// importamos diseños de bottom bar y top bar de anyox
+import SpaceTopBar from "../components/SpaceTopBar.astro";
+import SpaceBottomNav from "../components/SpaceBottomNav.astro";
+---
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <style is:global>
+      @import "../styles/global.css";
+    </style>
+    <!-- Cargamos Lucide en el head para los iconos -->
+    <script is:inline src="https://unpkg.com/lucide@latest"></script>
+  </head>
+  
+  <body class="bg-[#F8FAFC] font-sans selection:bg-[#FDE047] h-screen w-screen overflow-hidden m-0 p-0 relative">
+    
+    {/* BARRA SUPERIOR: Le pasamos el título y la ruta de volver que recibe el Layout */}
+    <SpaceTopBar title={title} backHref={backUrl} homeHref="/dashboard" color={themeColor} />
+
+    {/* AQUÍ SE INYECTA TU MAPA O LECCIÓN */}
+    <slot />
+
+    {/* BARRA INFERIOR */}
+    <SpaceBottomNav />
+
+    <script is:inline>
+      if (window.lucide) {
+        window.lucide.createIcons();
+      }
+    </script>
+  </body>
+</html>

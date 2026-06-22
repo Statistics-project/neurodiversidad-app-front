@@ -1,0 +1,126 @@
+---
+import GameLayout from "../../../layouts/GameLayout.astro";
+import dinoBg from "/src/assets/dino-background.webp";
+const title = "Paleontología";
+
+// Assets de Botones
+import botonDinoBlue from "/src/assets/iconos-mapa-dinosaurios/blue-dino-button.webp";
+import botonDinoGreen from "/src/assets/iconos-mapa-dinosaurios/green-dino-button.webp";
+import botonDinoOrange from "/src/assets/iconos-mapa-dinosaurios/orange-dino-button.webp";
+import botonDinoPurple from "/src/assets/iconos-mapa-dinosaurios/purple-dino-button.webp";
+
+// ===== NUEVOS ASSETS: Animaciones del Dinosaurio =====
+import dinoWalkRight from "/src/assets/iconos-mapa-dinosaurios/dino-animaciones/dino-walk-right.webp";
+import dinoStand from "/src/assets/iconos-mapa-dinosaurios/dino-animaciones/dino-stand.webp";
+import dinoWalkLeft from "/src/assets/iconos-mapa-dinosaurios/dino-animaciones/dino-walk-left.webp";
+import dinoWalking from "/src/assets/iconos-mapa-dinosaurios/dino-animaciones/dino-walking.webp";
+---
+
+{/* Pasamos el color naranja/terracota aquí en themeColor */}
+<GameLayout title={title} backUrl="/dashboard" themeColor="bg-[#c26227]">
+  <main
+    class="flex-1 min-h-screen w-full bg-[#e8a361] bg-center bg-fixed flex flex-col items-center justify-center p-4 pt-24 pb-32 overflow-y-auto overflow-x-hidden relative md:pt-32"
+    style={`background-image: url('${dinoBg.src}'); background-size: cover;`}
+  >
+    
+    {/* ===== EL DINOSAURIO ANIMADO (PRUEBA) ===== */}
+    {/* Este div está vacío porque la imagen se inyecta y cambia mediante CSS */}
+    <div class="dino-caminante z-20"></div>
+
+    {/* CONTENEDOR DEL CAMINO RESPONSIVE.
+        - En móvil: aspect-[4/5] (más alto, separa los botones verticalmente para el caminito).
+        - En PC: md:aspect-video (vuelve a la vista perfecta de escritorio 16:9).
+    */}
+    <div class="relative w-full max-w-4xl aspect-[4/5] md:aspect-video z-10 mt-8 md:mt-0">
+   
+      {/* ===== LA LÍNEA DE PUNTITOS (SVG) ===== */}
+      {/* Al tener preserveAspectRatio="none", la línea se estirará de forma inteligente
+          tanto en el formato vertical del móvil como en el horizontal de PC. */}
+      <svg class="absolute inset-0 w-full h-full pointer-events-none z-0" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <path 
+          d="M 25 30 Q 50 10 75 30 T 80 70 T 50 63 T 10 80" 
+          fill="none" 
+          stroke="#ffffff" 
+          stroke-width="0.8" 
+          stroke-dasharray="2 2" 
+          stroke-linecap="round"
+          class="opacity-60 drop-shadow-md"
+        />
+      </svg>
+      
+      {/* ================= BOTÓN 1: AZUL (Inicio - Arriba Izquierda) ================= */}
+      <a 
+        href="/contenidos/paleontologia/leccion-1" 
+        class="absolute left-[25%] top-[30%] -translate-x-1/2 -translate-y-1/2 hover:scale-110 transition-transform cursor-pointer z-10"
+      >
+        <img src={botonDinoBlue.src} alt="Nivel 1: Triceratops" class="w-20 h-20 md:w-28 md:h-28 drop-shadow-lg" />
+      </a>
+
+      {/* ================= BOTÓN 2: VERDE (Arriba Centro) ================= */}
+      <a 
+        href="/contenidos/paleontologia/leccion-2" 
+        class="absolute left-[70%] top-[20%] -translate-x-1/2 -translate-y-1/2 hover:scale-110 transition-transform cursor-pointer z-10"
+      >
+        <img src={botonDinoGreen.src} alt="Nivel 2: Stego" class="w-20 h-20 md:w-28 md:h-28 drop-shadow-lg" />
+      </a>
+
+      {/* ================= BOTÓN 3: NARANJA ORIGINAL (Centro Derecha Baja) ================= */}
+      <div class="absolute left-[45%] top-[52%] -translate-x-1/2 -translate-y-1/2 opacity-60 pointer-events-none z-10">
+        <img src={botonDinoOrange.src} alt="Nivel 3: Decorativo" class="w-20 h-20 md:w-28 md:h-28" />
+      </div>
+
+      {/* ================= BOTÓN 4: MARRÓN TRICERATOPS (Centro Izquierda) ================= */}
+      <div class="absolute left-[80%] top-[70%] -translate-x-1/2 -translate-y-1/2 opacity-60 pointer-events-none z-10 hue-rotate-180 brightness-90">
+        <img src={botonDinoBlue.src} alt="Nivel 4: Decorativo" class="w-20 h-20 md:w-28 md:h-28" />
+      </div>
+
+      {/* ================= BOTÓN 5: ROSA / T-REX (Abajo Izquierda) ================= */}
+      <div class="absolute left-[10%] top-[80%] -translate-x-1/2 -translate-y-1/2 opacity-60 pointer-events-none z-10">
+        <img src={botonDinoPurple.src} alt="Nivel 5: Decorativo" class="w-20 h-20 md:w-28 md:h-28" />
+      </div>
+      
+    </div>
+  </main>
+</GameLayout>
+
+{/* ===== ESTILOS PARA LA ANIMACIÓN DEL DINOSAURIO ===== */}
+{/* define:vars nos permite usar las rutas procesadas por Astro directo en nuestro CSS */}
+<style define:vars={{
+  f1: `url('${dinoWalkRight.src}')`,
+  f2: `url('${dinoStand.src}')`,
+  f3: `url('${dinoWalkLeft.src}')`,
+  f4: `url('${dinoWalking.src}')`
+}}>
+  .dino-caminante {
+    position: absolute;
+    bottom: 10%; /* Posición de prueba (abajo) */
+    left: -150px; /* Inicia escondido fuera de la pantalla por la izquierda */
+    width: 120px; /* Tamaño del dinosaurio */
+    height: 120px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    pointer-events: none; /* Evita que el dino bloquee clics si pasa por encima de un botón */
+    
+    /* Aplica dos animaciones al mismo tiempo: 
+       1. Avanzar por la pantalla (dura 20 segundos).
+       2. Mover las patitas (dura 0.6 segundos el ciclo completo). */
+    animation: 
+      desplazamiento 20s linear infinite,
+      patitas 0.6s infinite;
+  }
+
+  /* Ciclo de caminata de 4 frames perfectos */
+  @keyframes patitas {
+    0%, 24.99% { background-image: var(--f1); }
+    25%, 49.99% { background-image: var(--f2); }
+    50%, 74.99% { background-image: var(--f3); }
+    75%, 100% { background-image: var(--f4); }
+  }
+
+  /* Movimiento lineal desde la izquierda hasta salir por la derecha */
+  @keyframes desplazamiento {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(120vw); }
+  }
+</style>
