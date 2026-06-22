@@ -1,0 +1,112 @@
+---
+// src/components/saturnRotating.astro
+interface Props {
+  size?: string;
+  className?: string;
+}
+
+const { size, className = "" } = Astro.props;
+---
+
+<div 
+  class={`saturn-container pointer-events-none select-none ${className}`} 
+  style={size ? `width: ${size}; height: ${size};` : undefined}
+>
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    xmlns:xlink="http://www.w3.org/1999/xlink" 
+    version="1.1" 
+    viewBox="0 0 500 500"
+    width="100%"
+    height="100%"
+    class="w-full h-full"
+  >
+    <defs>
+      <clipPath id="saturn-clip">
+        <circle cx="250" cy="250" r="120"/>
+      </clipPath>
+      <!-- Recorte para la mitad delantera del anillo (solo la mitad inferior inclinada) -->
+      <clipPath id="front-ring-clip">
+        <rect x="-100" y="250" width="700" height="400" transform="rotate(-12 250 250)" />
+      </clipPath>
+      <!-- Gradiente para el color del anillo de Saturno -->
+      <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="rgba(229, 193, 133, 0)" />
+        <stop offset="15%" stop-color="rgba(218, 165, 32, 0.4)" />
+        <stop offset="30%" stop-color="rgba(245, 222, 179, 0.85)" />
+        <stop offset="50%" stop-color="rgba(253, 245, 230, 0.95)" />
+        <stop offset="70%" stop-color="rgba(245, 222, 179, 0.85)" />
+        <stop offset="85%" stop-color="rgba(218, 165, 32, 0.4)" />
+        <stop offset="100%" stop-color="rgba(229, 193, 133, 0)" />
+      </linearGradient>
+      <!-- Sombreado radial de esfera para dar profundidad 3D -->
+      <radialGradient id="saturn-shading" cx="30%" cy="30%" r="70%">
+        <stop offset="0%" stop-color="#ffffff" stop-opacity="0.3" />
+        <stop offset="35%" stop-color="#ffffff" stop-opacity="0" />
+        <stop offset="70%" stop-color="#000000" stop-opacity="0" />
+        <stop offset="90%" stop-color="#000000" stop-opacity="0.25" />
+        <stop offset="100%" stop-color="#000000" stop-opacity="0.55" />
+      </radialGradient>
+    </defs>
+
+    <!-- ANILLO TRASERO (detrás del planeta) -->
+    <ellipse cx="250" cy="250" rx="220" ry="38" fill="none" stroke="url(#ringGrad)" stroke-width="22" transform="rotate(-12 250 250)" />
+
+    <!-- Capa de atmósfera/brillo externo -->
+    <circle cx="250" cy="250" r="130" fill="#a17d3b" opacity="0.6">
+       <animate attributeName="r" calcMode="spline" keySplines="0.3 0 0.7 1;0.3 0 0.7 1"
+                values="130;134;130" dur="6s" repeatCount="indefinite"/>
+    </circle>
+    
+    <!-- Cuerpo del planeta -->
+    <circle cx="250" cy="250" r="120" fill="#e5c185"/>
+
+    <!-- Bandas de gas (con máscara para mantenerse dentro de la esfera) -->
+    <g clip-path="url(#saturn-clip)">
+      <g>
+        <g id="saturn-bands" fill="#c68e3f">
+          <rect y="120" x="-50" width="600" height="24" rx="10" ry="10" />
+          <rect y="160" x="-50" width="600" height="12" rx="6" ry="6" />
+          <rect y="190" x="-50" width="600" height="32" rx="16" ry="16" />
+          <rect y="240" x="-50" width="600" height="16" rx="8" ry="8" />
+          <rect y="275" x="-50" width="600" height="28" rx="14" ry="14" />
+          <rect y="320" x="-50" width="600" height="14" rx="7" ry="7" />
+          <rect y="350" x="-50" width="600" height="20" rx="10" ry="10" />
+        </g>
+        <use transform="translate(600 0)" xlink:href="#saturn-bands"/>
+        <animateTransform attributeName="transform" attributeType="XML" type="translate"
+                          from="0 0" to="-600 0" dur="25s" repeatCount="indefinite"/>
+      </g>
+      
+      <!-- Tormentas y nubes de gas (se mueven a velocidad diferente para profundidad) -->
+      <g opacity="0.75">
+        <g id="saturn-storms" fill="#fffcf2">
+          <rect y="145" x="40"  width="60" height="10" rx="5" ry="5"/>
+          <rect y="177" x="250" width="80" height="8"  rx="4" ry="4"/>
+          <rect y="210" x="120" width="50" height="12" rx="6" ry="6"/>
+          <circle cx="340" cy="256" r="12" /> 
+          <rect y="298" x="80"  width="90" height="10" rx="5" ry="5"/>
+          <rect y="338" x="220" width="70" height="8"  rx="4" ry="4"/>
+        </g>
+        <use transform="translate(600 0)" xlink:href="#saturn-storms"/>
+        <animateTransform attributeName="transform" attributeType="XML" type="translate"
+                          from="0 0" to="-600 0" dur="18s" repeatCount="indefinite"/>
+      </g>
+      <!-- Máscara de sombreado de esfera 3D -->
+      <circle cx="250" cy="250" r="120" fill="url(#saturn-shading)" />
+    </g>
+
+    <!-- ANILLO DELANTERO (enfrente del planeta, recortado a la mitad inferior) -->
+    <g clip-path="url(#front-ring-clip)">
+      <ellipse cx="250" cy="250" rx="220" ry="38" fill="none" stroke="url(#ringGrad)" stroke-width="22" transform="rotate(-12 250 250)" />
+    </g>
+  </svg>
+</div>
+
+<style>
+  .saturn-container {
+    display: inline-block;
+    position: relative;
+    filter: drop-shadow(0 0 35px rgba(229, 193, 133, 0.45)) drop-shadow(0 0 70px rgba(161, 125, 59, 0.25));
+  }
+</style>

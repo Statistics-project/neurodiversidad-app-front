@@ -1,13 +1,15 @@
 ---
 // src/pages/login.astro
 import BaseLayout from "../layouts/BaseLayout.astro";
+import backgroundPaisaje1 from "../assets/background-paisaje1.jpeg";
 ---
 
 <BaseLayout title="CapyLearn - Iniciar Sesión">
   <main class="relative min-h-screen flex items-center justify-center p-4">
     <!-- FONDO CON BLUR -->
     <div
-      class="fixed inset-0 z-0 bg-[url('/background-paisaje1.jpeg')] bg-cover bg-center opacity-100 blur-[4px] scale-105"
+      class="fixed inset-0 z-0 bg-cover bg-center opacity-100 blur-[4px] scale-105"
+      style={`background-image: url(${backgroundPaisaje1.src});`}
     >
     </div>
 

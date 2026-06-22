@@ -1,0 +1,41 @@
+---
+// src/components/TopBar.astro
+export interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!-- Contenedor transparente y absoluto para que no tape el fondo espacial -->
+<header class="absolute top-0 z-50 flex w-full items-center justify-between bg-transparent px-8 py-8">
+  
+  <!-- Botón Atrás -->
+  <a
+    href="#"
+    aria-label="Volver"
+    class="group inline-flex h-16 w-16 items-center justify-center rounded-3xl bg-white shadow-[0_8px_0_rgba(0,0,0,0.35)] transition-all duration-100 ease-out active:translate-y-[6px] active:shadow-[0_2px_0_rgba(0,0,0,0.35)]"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8 text-purple-800 transition-transform group-active:scale-90">
+      <line x1="19" y1="12" x2="5" y2="12"></line>
+      <polyline points="12 19 5 12 12 5"></polyline>
+    </svg>
+  </a>
+
+  <!-- Título Dinámico con sombra para resaltar sobre las estrellas -->
+  <h1 class="flex-1 text-center text-3xl font-extrabold uppercase tracking-wide text-white drop-shadow-lg sm:text-4xl">
+    {title}
+  </h1>
+
+  <!-- Botón Inicio -->
+  <a
+    href="/"
+    aria-label="Inicio"
+    class="group inline-flex h-16 w-16 items-center justify-center rounded-3xl bg-white shadow-[0_8px_0_rgba(0,0,0,0.35)] transition-all duration-100 ease-out active:translate-y-[6px] active:shadow-[0_2px_0_rgba(0,0,0,0.35)]"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-8 w-8 text-purple-700 transition-transform group-active:scale-90">
+      <path d="M11.47 3.84a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 1-1.06 1.06l-.22-.22V19.5a1.5 1.5 0 0 1-1.5 1.5h-3a.75.75 0 0 1-.75-.75V16.5a.75.75 0 0 0-.75-.75h-2.5a.75.75 0 0 0-.75.75v3.75a.75.75 0 0 1-.75.75h-3a1.5 1.5 0 0 1-1.5-1.5v-6.13l-.22.22a.75.75 0 1 1-1.06-1.06l8.69-8.69Z"></path>
+    </svg>
+  </a>
+  
+</header>

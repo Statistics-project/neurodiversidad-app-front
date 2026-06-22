@@ -1,0 +1,333 @@
+---
+import SpaceLayout from "../../../layouts/SpaceLayout.astro";
+import RocketButton from "../../../components/RocketButton.astro";
+import EarthRotating from "../../../components/earthRotating.astro";
+import SaturnRotating from "../../../components/saturnRotating.astro";
+import MarteRotating from "../../../components/marteRotating.astro";
+import MercurioRotating from "../../../components/mercurioRotating.astro";
+import MouseRocket from "../../../components/mouseRocket.astro";
+import JupiterRotating from "../../../components/jupiterRotating.astro";
+import LunaRotating from "../../../components/lunaRotating.astro";
+import asteroidSvg from "../../../assets/iconos-mapa-espacio/asteroid.svg";
+
+
+// Importar los SVGs como texto crudo para inyectarlos en línea
+
+import astronautaIcon from "../../../assets/iconos-mapa-espacio/astronautaIcon.svg?raw";
+import holeIcon from "../../../assets/iconos-mapa-espacio/holeIcon.svg?raw";
+import rocketIcon from "../../../assets/iconos-mapa-espacio/rocketIcon.svg?raw";
+import starIcon from "../../../assets/iconos-mapa-espacio/starIcon.svg?raw";
+
+const iconMap: Record<string, string> = {
+  rocket: rocketIcon.replaceAll("img1", "rocket-img"),
+  star: starIcon.replaceAll("img1", "star-img"),
+  astronauta: astronautaIcon.replaceAll("img1", "astronauta-img"),
+  hole: holeIcon.replaceAll("img1", "hole-img"),
+};
+
+// CAPA 3 — 5 nodos placeholder distribuidos en una curva horizontal suave.
+const nodes = [
+  { top: 88, left: 32, label: "Nivel 1", icon: "rocket" },
+  { top: 67, left: 74, label: "Nivel 2", icon: "star" },
+  { top: 52, left: 32, label: "Nivel 3", icon: "astronauta" },
+  { top: 28, left: 66, label: "Nivel 4", icon: "hole" },
+  { top: 7, left: 38, label: "Nivel 5" },
+];
+
+// Configuración de asteroides decorativos de fondo (12 en total, incluyendo 2 gigantes que pasan de vez en cuando)
+const asteroids = [
+  { top: 12, width: 90,  height: 90,  duration: 85,  delay: -10,  opacity: 0.28, direction: "right" },
+  { top: 22, width: 35,  height: 35,  duration: 120, delay: -45,  opacity: 0.18, direction: "left" }, // raised from 0.09
+  { top: 28, width: 220, height: 220, duration: 110, delay: -15,  opacity: 0.58, direction: "right" },
+  { top: 32, width: 110, height: 110, duration: 75,  delay: -20,  opacity: 0.32, direction: "right" },
+  { top: 43, width: 50,  height: 50,  duration: 95,  delay: -75,  opacity: 0.22, direction: "left" },  // raised from 0.15
+  { top: 51, width: 85,  height: 85,  duration: 80,  delay: -30,  opacity: 0.26, direction: "right" },
+  { top: 60, width: 25,  height: 25,  duration: 140, delay: -100, opacity: 0.15, direction: "left" },  // raised from 0.06
+  { top: 68, width: 260, height: 260, duration: 145, delay: -80,  opacity: 0.55, direction: "left" },
+  { top: 70, width: 95,  height: 95,  duration: 85,  delay: -15,  opacity: 0.30, direction: "right" },
+  { top: 79, width: 65,  height: 65,  duration: 110, delay: -50,  opacity: 0.22, direction: "left" },  // raised from 0.18
+  { top: 88, width: 100, height: 100, duration: 80,  delay: -60,  opacity: 0.25, direction: "right" },
+  { top: 95, width: 40,  height: 40,  duration: 130, delay: -115, opacity: 0.20, direction: "left" },  // raised from 0.12
+];
+
+
+
+
+
+---
+
+<SpaceLayout title="Astronomía y Espacio" backHref="#" homeHref="/">
+  <!-- CONTENEDOR ALTO DE LA RUTA / ROADMAP -->
+  <div class="relative min-h-625 w-full">
+    <!-- CAPA DE PLANETAS EN EL FONDO (CON EL CAMINO DE NEÓN DENTRO) -->
+    <div class="absolute inset-0 pointer-events-none z-20 overflow-y-visible overflow-x-clip" style="will-change: transform; transform: translate3d(0, 0, 0); backface-visibility: hidden;">
+      
+      <!-- CAMINO CONECTANDO LOS BOTONES (SVG ROADMAP PATH DE NEÓN) -->
+      <svg class="absolute inset-0 w-full h-full pointer-events-none z-10 overflow-visible" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="pathGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+            <stop offset="0%" stop-color="#38bdf8" />
+            <stop offset="25%" stop-color="#818cf8" />
+            <stop offset="50%" stop-color="#c084fc" />
+            <stop offset="75%" stop-color="#f472b6" />
+            <stop offset="100%" stop-color="#fb7185" />
+          </linearGradient>
+        </defs>
+        
+        <!-- Brillo de fondo difuso (glow) -->
+        <path 
+          d="M 32 88 C 42 94, 55 92, 65 89 M 73 84 C 77 78, 76 72, 74 67 C 60 76, 40 60, 32 52 C 15 45, 45 35, 66 28 C 85 22, 60 12, 38 7" 
+          fill="none" 
+          stroke="url(#pathGrad)" 
+          stroke-width="10px" 
+          opacity="0.18" 
+          vector-effect="non-scaling-stroke"
+          style="filter: blur(5px);"
+        />
+        
+        <!-- Línea discontinua principal (camino de estrellas blancas) -->
+        <path 
+          d="M 32 88 C 42 94, 55 92, 65 89 M 73 84 C 77 78, 76 72, 74 67 C 60 76, 40 60, 32 52 C 15 45, 45 35, 66 28 C 85 22, 60 12, 38 7" 
+          fill="none" 
+          stroke="#ffffff" 
+          stroke-width="4.5px" 
+          stroke-dasharray="16, 24" 
+          stroke-linecap="round" 
+          vector-effect="non-scaling-stroke"
+          style="filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.9)) drop-shadow(0 0 2px rgba(192, 132, 252, 0.45));"
+        />
+      </svg>
+
+      <!-- Asteroides flotando en el fondo -->
+      {
+        asteroids.map((a) => (
+          <img 
+            src={asteroidSvg.src} 
+            class={`asteroid-float ${a.direction === 'left' ? 'asteroid-left' : 'asteroid-right'}`} 
+            style={`top: ${a.top}%; width: ${a.width}px; height: ${a.height}px; animation-duration: ${a.duration}s; animation-delay: ${a.delay}s; opacity: ${a.opacity};`} 
+            alt="Asteroide decorativo"
+          />
+        ))
+      }
+
+      <!-- Tierra (Abajo a la Izquierda) - 100% -->
+      <div class="absolute top-[88%] left-[15%] -translate-x-1/2 -translate-y-1/2 z-20">
+        <div class="planet-wrapper" style="--planet-glow: rgba(56, 189, 248, 0.7);">
+          <EarthRotating className="w-62.5] h-62.5 md:w-112.5 md:h-112.5" />
+        </div>
+      </div>
+
+      <!-- Luna (Abajo a la Derecha) - Nivel de la Tierra -->
+      <div class="absolute top-[88%] left-[70%] -translate-x-1/2 -translate-y-1/2 z-20">
+        <div class="planet-wrapper" style="--planet-glow: rgba(203, 213, 225, 0.75);">
+          <LunaRotating className="w-25 h-25 md:w-45 md:h-45" />
+        </div>
+      </div>
+
+      <!-- Júpiter (Arriba a la Derecha) - Súper Gigante -->
+      <div class="absolute top-[28%] left-[94%] -translate-x-1/2 -translate-y-1/2 z-20">
+        <div class="planet-wrapper" style="--planet-glow: rgba(210, 112, 53, 0.75);">
+          <JupiterRotating className="w-62.5 h-62.5 md:w-112.5 md:h-112.5" />
+        </div>
+      </div>
+
+      <!-- Saturno (Arriba a la Izquierda) - Más arriba y más grande -->
+      <div class="absolute top-[7%] left-[14%] -translate-x-1/2 -translate-y-1/2 z-20">
+        <div class="planet-wrapper" style="--planet-glow: rgba(245, 158, 11, 0.7);">
+          <SaturnRotating className="w-90 h-90 md:w-162.5 md:h-162.5" />
+        </div>
+      </div>
+
+      <!-- Marte (Arriba a la Izquierda) - Más grande -->
+      <div class="absolute top-[52%] left-[16%] -translate-x-1/2 -translate-y-1/2 z-20">
+        <div class="planet-wrapper" style="--planet-glow: rgba(239, 68, 68, 0.7);">
+          <MarteRotating className="w-47.5 h-47.5 md:w-85 md:h-85" />
+        </div>
+      </div>
+
+      <!-- Mercurio (Al Medio a la Derecha) - Ajustado -->
+      <div class="absolute top-[67%] left-[89%] -translate-x-1/2 -translate-y-1/2 z-20">
+        <div class="planet-wrapper" style="--planet-glow: rgba(148, 163, 184, 0.7);">
+          <MercurioRotating className="w-23.75 h-23.75 md:w-42.5 md:h-42.5" />
+        </div>
+      </div>
+    </div>
+
+    <!-- BOTONES DE NIVEL -->
+    <div class="absolute inset-0 z-30 pointer-events-none">
+      {
+        nodes.map((n, i) => (
+          <div
+            id={`btn-node-${i+1}`}
+            class="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-auto"
+            style={`top:${n.top}%;left:${n.left}%;`}
+          >
+            {i === 0 && (
+              <!-- POPUP DUOLINGO STYLE -->
+              <div id="popup" class="absolute bottom-full left-1/2 -translate-x-1/2 mb-6 flex flex-col items-center w-72 z-50">
+                <!-- Card naranja -->
+                <div class="rounded-3xl px-6 pt-5 pb-5 w-full select-none" style="background:#ff9f00; box-shadow: 0 6px 0 #c47700;">
+                  <p class="font-extrabold text-white text-2xl leading-tight mb-1 text-center">¡Sigue así!</p>
+                  <p class="text-white/90 text-base font-medium mb-4 text-center">Lección completada</p>
+                  <!-- Botón pill blanco -->
+                  <div class="w-full rounded-2xl bg-white py-4 text-center font-extrabold text-sm tracking-widest cursor-pointer active:translate-y-1 transition-transform"
+                       style="color:#ff9f00; box-shadow: 0 4px 0 #e0d0a0; letter-spacing: 0.12em;">
+                    CONTINUAR +25 EXP
+                  </div>
+                </div>
+                <!-- Triángulo apuntando abajo -->
+                <div style="width:0;height:0;border-left:16px solid transparent;border-right:16px solid transparent;border-top:18px solid #ff9f00;"></div>
+              </div>
+            )}
+            <RocketButton label={n.label} animationDelay={`${i * 0.6}s`}>
+              {n.icon && (
+                <div 
+                  class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] flex items-center justify-center text-white icon-container" 
+                  set:html={iconMap[n.icon]} 
+                />
+              )}
+            </RocketButton>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- SCRIPT PARA EMPEZAR EN EL FONDO DE LA PÁGINA (TIERRA) Y SECCIÓN DE POPUP -->
+  <script is:inline>
+    // Desplazar la ventana al fondo al cargar
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: 'instant'
+    });
+
+    // Lógica del popup del Nivel 1
+    let popupTimer = null;
+    let fadeTimer = null;
+
+    function showPopup() {
+      const popup = document.getElementById("popup");
+      if (!popup) return;
+
+      if (popupTimer) clearTimeout(popupTimer);
+      if (fadeTimer) clearTimeout(fadeTimer);
+
+      popup.classList.remove("hidden", "duo-fade");
+      popup.classList.add("duo-pop");
+
+      popupTimer = setTimeout(() => {
+        popup.classList.remove("duo-pop");
+        popup.classList.add("duo-fade");
+        
+        fadeTimer = setTimeout(() => {
+          popup.classList.add("hidden");
+          popup.classList.remove("duo-fade");
+        }, 220);
+      }, 2000);
+    }
+
+    // Esperar a que cargue el DOM para asociar el evento al botón de Nivel 1
+    document.addEventListener("DOMContentLoaded", () => {
+      const btn1 = document.getElementById("btn-node-1");
+      if (btn1) {
+        btn1.addEventListener("click", showPopup);
+      }
+    });
+  </script>
+
+  <!-- ESTILOS PARA ADAPTAR LOS SVGS DE LOS BOTONES -->
+  <style>
+    .icon-container :global(svg) {
+      width: 100% !important;
+      height: 100% !important;
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    /* Estilos para animar y dar realce a los planetas al pasar el cursor */
+    .planet-wrapper {
+      opacity: 0.65;
+      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: auto;
+      will-change: transform, opacity;
+      transform: translate3d(0, 0, 0);
+      backface-visibility: hidden;
+    }
+
+    @media (min-width: 768px) {
+      .planet-wrapper {
+        opacity: 0.75;
+      }
+    }
+
+    .planet-wrapper:hover {
+      opacity: 1 !important;
+      transform: scale(1.08) translate3d(0, 0, 0);
+      filter: drop-shadow(0 0 35px var(--planet-glow));
+    }
+
+    /* Animaciones cómicas de Duolingo pop/fade (centradas con translate-x -50%) */
+    @keyframes duoPop {
+      0%   { opacity: 0; transform: translate3d(-50%, 8px, 0) scale(0.7); }
+      100% { opacity: 1; transform: translate3d(-50%, 0, 0) scale(1); }
+    }
+    @keyframes duoFade {
+      0%   { opacity: 1; transform: translate3d(-50%, 0, 0) scale(1); }
+      100% { opacity: 0; transform: translate3d(-50%, 4px, 0) scale(0.88); }
+    }
+    .duo-pop  { animation: duoPop  0.38s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+    .duo-fade { animation: duoFade 0.22s ease forwards; }
+
+    /* Animación para el movimiento y rotación de asteroides a la derecha */
+    @keyframes driftAndSpin {
+      0% {
+        transform: translate3d(-150px, 0, 0) rotate(0deg);
+      }
+      100% {
+        transform: translate3d(calc(100vw + 150px), 0, 0) rotate(1440deg);
+      }
+    }
+
+    /* Animación para el movimiento y rotación de asteroides a la izquierda */
+    @keyframes driftAndSpinLeft {
+      0% {
+        transform: translate3d(calc(100vw + 150px), 0, 0) rotate(0deg);
+      }
+      100% {
+        transform: translate3d(-150px, 0, 0) rotate(-1440deg);
+      }
+    }
+
+    .asteroid-float {
+      position: absolute;
+      pointer-events: none;
+      will-change: transform;
+      z-index: 5; /* Colocados detrás de los planetas */
+    }
+
+    .asteroid-right {
+      animation: driftAndSpin linear infinite;
+    }
+
+    .asteroid-left {
+      animation: driftAndSpinLeft linear infinite;
+    }
+  </style>
+
+  <!-- Ocultar la barra de scroll nativa del navegador manteniendo la capacidad de scroll -->
+  <style is:global>
+    /* Ocultar en Chrome, Safari, Edge y Opera */
+    ::-webkit-scrollbar {
+      display: none !important;
+    }
+    
+    /* Ocultar en Firefox y IE/Edge antiguos */
+    html, body {
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+  </style>
+
+  <MouseRocket />
+</SpaceLayout>

@@ -1,22 +1,83 @@
-/* src/styles/global.css */
-
-/* 1. Importación nativa de Tailwind v4: Carga todas las utilidades base del framework. */
+@import url("https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap");
 @import "tailwindcss";
 
-/* 2. Importación de tokens de diseño: Aquí residen nuestras variables de color y sombras personalizadas. */
-@import "./token.css";
+@theme {
+  --color-space-900: #070b1f;
+  --color-space-800: #0b1026;
+  --color-space-700: #121a3a;
+  --color-space-600: #1b2552;
 
-/* 3. Importación de la tipografía: Usamos Fredoka por ser redondeada y amigable para niños. */
-@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700;900&display=swap');
+  --color-nebula-400: #8b5cf6;
+  --color-nebula-500: #7c3aed;
+  --color-nebula-600: #6d28d9;
 
-/* 4. Ajustes globales de UX:
-   - -webkit-tap-highlight-color: Elimina el cuadro gris molesto al tocar en móviles.
-   - overflow-x: hidden: Evita que la pantalla se mueva hacia los lados.
-   - user-select: none: Evita que los niños seleccionen texto por error al jugar/interactuar, 
-     lo que mantiene la experiencia limpia como una aplicación nativa.
-*/
+  --color-star-200: #fde68a;
+  --color-star-300: #fcd34d;
+  --color-star-400: #fbbf24;
+
+  --color-glow: #38bdf8;
+
+  --font-display: "Baloo 2", system-ui, sans-serif;
+  --font-body: "Nunito", system-ui, sans-serif;
+
+  --shadow-node: 0 8px 24px rgba(124, 58, 237, 0.45);
+  --shadow-node-active: 0 0 0 6px rgba(56, 189, 248, 0.25),
+    0 12px 32px rgba(56, 189, 248, 0.55);
+
+  --animate-twinkle: twinkle 3s ease-in-out infinite;
+  --animate-float: float 4s ease-in-out infinite;
+  --animate-drift: drift 9s ease-in-out infinite;
+
+  @keyframes twinkle {
+    0%,
+    100% {
+      opacity: 0.2;
+      transform: scale(0.8);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+  }
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+  @keyframes drift {
+    0% {
+      transform: translateX(0) translateY(0);
+    }
+    50% {
+      transform: translateX(10px) translateY(-6px);
+    }
+    100% {
+      transform: translateX(0) translateY(0);
+    }
+  }
+}
+
+:root {
+  color-scheme: dark;
+}
+
+html,
 body {
-  -webkit-tap-highlight-color: transparent;
-  overflow-x: hidden;
-  user-select: none; /* Evita que los niños seleccionen texto por accidente jugando */
+  height: 100%;
+  margin: 0;
+  background: #070b1f;
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
