@@ -1,0 +1,28 @@
+---
+// No se requieren props por ahora, pero se pueden agregar en el futuro
+// para personalizar los enlaces o el estado activo
+---
+
+<nav
+  class="fixed bottom-0 z-50 flex w-full items-center justify-around bg-[#4f1d95] px-10 py-3 shadow-[0_-4px_20px_rgba(0,0,0,0.35)]"
+  style="background-color: #4f1d95 !important;"
+>
+  <button type="button" aria-label="Inicio" class="text-[#d8b4fe] transition-all duration-300 hover:scale-110 hover:text-white">
+    <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M4 11l8-7 8 7v9a1 1 0 0 1-1 1h-5v-6h-4v6H5a1 1 0 0 1-1-1z" />
+    </svg>
+  </button>
+  <button type="button" aria-label="Progreso" class="text-[#d8b4fe] transition-all duration-300 hover:scale-110 hover:text-white">
+    <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
+      <rect x="4" y="12" width="4" height="8" rx="1" />
+      <rect x="10" y="8" width="4" height="12" rx="1" />
+      <rect x="16" y="4" width="4" height="16" rx="1" />
+    </svg>
+  </button>
+  <button type="button" aria-label="Perfil" class="text-[#d8b4fe] transition-all duration-300 hover:scale-110 hover:text-white">
+    <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
+      <circle cx="12" cy="8" r="4" />
+      <path d="M4 20a8 8 0 0 1 16 0z" />
+    </svg>
+  </button>
+</nav>

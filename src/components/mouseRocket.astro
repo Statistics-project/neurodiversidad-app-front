@@ -1,0 +1,189 @@
+---
+// src/components/mouseRocket.astro
+---
+
+<div id="rocket-cursor-container" class="pointer-events-none fixed inset-0 z-[9999] overflow-hidden select-none">
+  <!-- El cursor de cohete personalizado -->
+  <div 
+    id="custom-rocket" 
+    class="absolute top-0 left-0 w-16 h-16 -translate-x-1/2 -translate-y-1/2 will-change-transform opacity-0 transition-opacity duration-300"
+  >
+    <svg viewBox="0 0 64 64" class="w-full h-full drop-shadow-[0_0_8px_rgba(251,191,36,0.65)]">
+      <!-- Aletas laterales -->
+      <path d="M16 48 C8 54 8 58 12 60 L20 52 Z" fill="#ef4444" />
+      <path d="M48 48 C56 54 56 58 52 60 L44 52 Z" fill="#ef4444" />
+      <!-- Fuego/Propulsión del motor con animación de parpadeo -->
+      <path d="M32 50 C28 58 36 64 32 64 C28 64 36 58 32 50 Z" fill="#f59e0b">
+        <animate 
+          attributeName="d" 
+          values="M32 50 C28 55 36 60 32 60 C28 60 36 55 32 50 Z;M32 50 C26 58 38 64 32 64 C26 64 38 58 32 50 Z;M32 50 C28 55 36 60 32 60 C28 60 36 55 32 50 Z" 
+          dur="0.12s" 
+          repeatCount="indefinite" 
+        />
+      </path>
+      <!-- Cuerpo del cohete -->
+      <path d="M32 4 C42 16 44 32 44 48 L20 48 C20 32 22 16 32 4 Z" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1" />
+      <!-- Punta del cohete -->
+      <path d="M32 4 C37 10 40 18 41.5 24 L22.5 24 C24 18 27 10 32 4 Z" fill="#ef4444" />
+      <!-- Ventanilla -->
+      <circle cx="32" cy="34" r="6" fill="#38bdf8" stroke="#1d4ed8" stroke-width="1.5" />
+      <circle cx="30" cy="32" r="2" fill="#fff" opacity="0.6" />
+    </svg>
+  </div>
+</div>
+
+<script>
+  // Ocultamos el cursor estándar dentro de la página
+  const spaceBody = document.querySelector('body');
+  if (spaceBody) {
+    spaceBody.classList.add('cursor-none-active');
+  }
+
+  const rocket = document.getElementById('custom-rocket');
+  const container = document.getElementById('rocket-cursor-container');
+
+  let mouseX = 0;
+  let mouseY = 0;
+  let rocketX = 0;
+  let rocketY = 0;
+  let rocketAngle = 0;
+  let active = false;
+
+  // Seguimiento de las coordenadas del mouse
+  window.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    
+    if (!active) {
+      active = true;
+      if (rocket) {
+        rocket.classList.remove('opacity-0');
+        // Posicionamos al inicio para evitar que vuele desde (0, 0)
+        rocketX = mouseX;
+        rocketY = mouseY;
+      }
+    }
+
+    // Generamos las chispas/confeti al mover
+    createSpark(mouseX, mouseY);
+  });
+
+  window.addEventListener('mouseleave', () => {
+    if (rocket) rocket.classList.add('opacity-0');
+    active = false;
+  });
+
+  window.addEventListener('mouseenter', () => {
+    if (rocket) rocket.classList.remove('opacity-0');
+    active = true;
+  });
+
+  // Loop de animación (Inercia suave y rotación de dirección)
+  function animate() {
+    if (active && rocket) {
+      // Inercia de movimiento (Lerp)
+      const dx = mouseX - rocketX;
+      const dy = mouseY - rocketY;
+      
+      rocketX += dx * 0.15;
+      rocketY += dy * 0.15;
+
+      // Calcular ángulo de orientación
+      if (Math.hypot(dx, dy) > 1.5) {
+        const targetAngle = Math.atan2(dy, dx) * 180 / Math.PI + 90;
+        // Evitamos rotaciones bruscas al dar la vuelta
+        let angleDiff = targetAngle - rocketAngle;
+        while (angleDiff < -180) angleDiff += 360;
+        while (angleDiff > 180) angleDiff -= 360;
+        rocketAngle += angleDiff * 0.22;
+      }
+
+      // Aplicar transformaciones mediante hardware-acceleration (will-change)
+      rocket.style.transform = `translate3d(${rocketX}px, ${rocketY}px, 0) rotate(${rocketAngle}deg)`;
+    }
+
+    requestAnimationFrame(animate);
+  }
+
+  requestAnimationFrame(animate);
+
+  // Paleta de colores para la estela de chispas/confeti (efecto fuego)
+  const colors = [
+    '#ef4444', // Rojo brillante
+    '#f97316', // Naranja encendido
+    '#f59e0b', // Amarillo ámbar
+    '#facc15', // Amarillo brillante
+    '#ffedd5'  // Naranja muy claro / destello de fuego
+  ];
+
+  function createSpark(x: number, y: number) {
+    if (!container) return;
+    
+    // Generamos 1 o 2 partículas por movimiento
+    const count = Math.random() > 0.45 ? 2 : 1;
+    
+    for (let i = 0; i < count; i++) {
+      const spark = document.createElement('div');
+      const size = Math.random() * 5 + 4; // Entre 4px y 9px
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      
+      spark.className = 'absolute rounded-full pointer-events-none will-change-transform';
+      spark.style.width = `${size}px`;
+      spark.style.height = `${size}px`;
+      spark.style.backgroundColor = color;
+      spark.style.boxShadow = `0 0 6px ${color}`;
+      
+      // Origen de la partícula: alineado exactamente detrás de los motores usando el ángulo del cohete
+      const angleRad = (rocketAngle - 90) * Math.PI / 180;
+      const offsetDist = 40; // distancia de desfase hacia atrás
+      const startX = rocketX - Math.cos(angleRad) * offsetDist;
+      const startY = rocketY - Math.sin(angleRad) * offsetDist;
+      
+      spark.style.transform = `translate3d(${startX}px, ${startY}px, 0)`;
+      
+      // Velocidad y deriva (física de inercia y gravedad espacial)
+      const velocity = Math.random() * 1.8 + 0.8;
+      const spreadAngle = (rocketAngle - 90) * Math.PI / 180 + (Math.random() - 0.5) * 0.55;
+      const driftX = -Math.cos(spreadAngle) * velocity * 2;
+      const driftY = -Math.sin(spreadAngle) * velocity * 2 + 0.8; // atracción de gravedad sutil
+      
+      container.appendChild(spark);
+      
+      // Animación individual de desvanecimiento
+      let posX = startX;
+      let posY = startY;
+      let opacity = 1.0;
+      let scale = 1.0;
+      let lifespan = 1.0;
+      
+      function updateParticle() {
+        posX += driftX;
+        posY += driftY;
+        opacity -= 0.038;
+        scale -= 0.038;
+        lifespan -= 0.038;
+        
+        if (lifespan <= 0) {
+          spark.remove();
+        } else {
+          spark.style.opacity = `${opacity}`;
+          spark.style.transform = `translate3d(${posX}px, ${posY}px, 0) scale(${scale})`;
+          requestAnimationFrame(updateParticle);
+        }
+      }
+      
+      requestAnimationFrame(updateParticle);
+    }
+  }
+</script>
+
+<style is:global>
+  /* Ocultar cursor estándar de manera global solo al tener la clase activa */
+  body.cursor-none-active,
+  body.cursor-none-active a,
+  body.cursor-none-active button,
+  body.cursor-none-active input,
+  body.cursor-none-active select {
+    cursor: none !important;
+  }
+</style>

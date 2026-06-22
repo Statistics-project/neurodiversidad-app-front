@@ -1,0 +1,46 @@
+---
+export interface Props {
+  label?: string;
+  onClick?: string;
+  animationDelay?: string;
+}
+
+const { label = "Lanzar cohete", onClick = "#", animationDelay = "0s" } = Astro.props;
+---
+
+<button
+  type="button"
+  aria-label={label}
+  class="rocket-btn group relative grid place-items-center w-[123px] h-[123px] rounded-full
+         bg-[#7c3aed] outline-none m-0 p-0 border-0
+         transition-transform duration-150 ease-out
+         active:translate-y-1 focus-visible:ring-4 focus-visible:ring-blue-300/60"
+  style={`animation-delay:${animationDelay};`}
+>
+  <span
+    class="relative grid place-items-center w-full h-full rounded-full
+           bg-[#7fa8e8] shadow-[0_8px_0_#3f6bb0]
+           transition-all duration-150 ease-out
+           group-active:shadow-[0_2px_0_#3f6bb0]"
+  >
+    <span
+      class="relative grid place-items-center w-[82%] h-[82%] rounded-full
+             bg-[#2b2c52] ring-2 ring-[#9bc0f0]/40"
+    >
+      <slot />
+    </span>
+  </span>
+</button>
+
+<style>
+  @keyframes space-float {
+    0%, 100% { transform: translateY(-10px); }
+    50% { transform: translateY(10px); }
+  }
+  .rocket-btn {
+    animation: space-float 4s ease-in-out infinite;
+  }
+  .rocket-btn:hover {
+    animation-play-state: paused;
+  }
+</style>

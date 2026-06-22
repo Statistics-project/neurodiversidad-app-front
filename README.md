@@ -4,7 +4,7 @@
 
 ```plaintext
 frontend/
-├── public/                  # Archivos estáticos puros (Audio de victoria, PDFs de los templates)
+├── public/                  # Archivos estáticos puros (Audio de victoria, PDFs de los templates) - NOTA: Las imágenes ahora están en src/assets/
 │   ├── audio/               # sonidos de éxito, error, música de fondo
 │   └── templates/           # PDFs descargables para los docentes (las paletas)
 ├── src/                     # Todo el código fuente de tu frontend

@@ -1,0 +1,95 @@
+---
+// src/components/mercurioRotating.astro
+interface Props {
+  size?: string;
+  className?: string;
+}
+
+const { size, className = "" } = Astro.props;
+---
+
+<div 
+  class={`mercury-container pointer-events-none select-none ${className}`} 
+  style={size ? `width: ${size}; height: ${size};` : undefined}
+>
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    xmlns:xlink="http://www.w3.org/1999/xlink" 
+    version="1.1" 
+    viewBox="0 0 350 350"
+    width="100%"
+    height="100%"
+    class="w-full h-full"
+  >
+    <defs>
+      <clipPath id="clip-mercury">
+        <circle cx="175" cy="175" r="157"/>
+      </clipPath>
+    </defs>
+    
+    <!-- Capa atmosférica externa / brillo plateado suave -->
+    <circle cx="175" cy="175" r="170" fill="#bdc3c7" opacity="0.4">
+       <animate attributeName="r" calcMode="spline" keySplines="0.3 0 0.7 1;0.3 0 0.7 1"
+                values="170;175;170" dur="5.0s" repeatCount="indefinite"/>
+    </circle>
+    
+    <!-- Cuerpo de Mercurio (Base gris rocosa) -->
+    <circle cx="175" cy="175" r="157" fill="#95a5a6"/>
+    
+    <g clip-path="url(#clip-mercury)">
+      <!-- Superficie rocosa con cráteres en rotación -->
+      <g>
+        <g id="mercury-surface">
+          <!-- Zonas de depósitos minerales oscuros / valles -->
+          <g fill="#7f8c8d" opacity="0.6">
+            <rect y="20"  x="10"  width="90" height="35" rx="17" ry="17"/>
+            <rect y="80"  x="190" width="120" height="45" rx="22" ry="22"/>
+            <rect y="140" x="50"  width="150" height="50" rx="25" ry="25"/>
+            <rect y="220" x="200" width="80"  height="40" rx="20" ry="20"/>
+            <rect y="270" x="20"  width="110" height="30" rx="15" ry="15"/>
+          </g>
+          <!-- Cráteres principales con relieve claro -->
+          <g fill="#5d6d7e" stroke="#bdc3c7" stroke-width="2.5">
+            <circle cx="65"  cy="60"  r="20" />
+            <circle cx="140" cy="120" r="12" />
+            <circle cx="230" cy="75"  r="24" />
+            <circle cx="280" cy="190" r="15" />
+            <circle cx="95"  cy="210" r="26" />
+            <circle cx="190" cy="260" r="16" />
+            <circle cx="260" cy="290" r="11" />
+            <circle cx="310" cy="110" r="14" />
+            <circle cx="45"  cy="295" r="18" />
+          </g>
+          <!-- Impactos de meteoritos pequeños -->
+          <g fill="#2e4053" opacity="0.5">
+            <circle cx="120" cy="40"  r="5" />
+            <circle cx="180" cy="85"  r="4" />
+            <circle cx="260" cy="140" r="6" />
+            <circle cx="140" cy="225" r="7" />
+            <circle cx="210" cy="180" r="5" />
+            <circle cx="80"  cy="150" r="4" />
+          </g>
+        </g>
+        <use transform="translate(400 0)" xlink:href="#mercury-surface"/>
+        <animateTransform attributeName="transform" attributeType="XML" type="translate"
+                          from="0 0" to="-400 0" dur="24s" repeatCount="indefinite"/>
+      </g>
+      
+      <!-- Sombreado 3D de volumen esférico -->
+      <radialGradient id="mercury-shading" cx="30%" cy="30%" r="70%">
+        <stop offset="0%" stop-color="rgba(255,255,255,0.2)" />
+        <stop offset="60%" stop-color="rgba(0,0,0,0)" />
+        <stop offset="100%" stop-color="rgba(0,0,0,0.6)" />
+      </radialGradient>
+      <circle cx="175" cy="175" r="157" fill="url(#mercury-shading)"/>
+    </g>
+  </svg>
+</div>
+
+<style>
+  .mercury-container {
+    display: inline-block;
+    position: relative;
+    filter: drop-shadow(0 0 35px rgba(149, 165, 166, 0.45)) drop-shadow(0 0 70px rgba(93, 109, 126, 0.25));
+  }
+</style>
