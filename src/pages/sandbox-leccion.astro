@@ -1,0 +1,17 @@
+---
+// src/pages/sandbox-leccion.astro
+import '../styles/global.css'; // <-- AGREGAR ESTO
+import LessonEngine from '../components/lesson/LessonEngine.tsx';
+---
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Sandbox: Motor de Lecciones</title>
+    <style>
+      body { background-color: #0b0f19; margin: 0; overflow: hidden; }
+    </style>
+  </head>
+  <body>
+    <LessonEngine client:load />
+  </body>
+</html>
