@@ -2,6 +2,7 @@
 // src/pages/sandbox-leccion.astro
 import '../styles/global.css'; // <-- AGREGAR ESTO
 import LessonEngine from '../components/lesson/LessonEngine.tsx';
+import { solarSystemLesson } from '../components/lesson/mockData';
 ---
 <html lang="es">
   <head>
@@ -12,6 +13,6 @@ import LessonEngine from '../components/lesson/LessonEngine.tsx';
     </style>
   </head>
   <body>
-    <LessonEngine client:load />
+    <LessonEngine lesson={solarSystemLesson} client:load />
   </body>
 </html>

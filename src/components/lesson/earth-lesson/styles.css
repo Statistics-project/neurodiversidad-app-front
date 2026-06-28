@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700;900&display=swap');
+
+.earth-lesson-wrapper {
+  font-family: 'Fredoka', system-ui, -apple-system, sans-serif;
+}
+
+@keyframes floatY { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
+@keyframes floatYR { 0%,100%{transform:translateY(0) rotate(-2deg)} 50%{transform:translateY(-10px) rotate(2deg)} }
+@keyframes slideUp { from{transform:translateY(26px);opacity:0} to{transform:translateY(0);opacity:1} }
+@keyframes bounceIn { 0%{transform:scale(.2);opacity:0} 60%{transform:scale(1.12);opacity:1} 80%{transform:scale(.95)} 100%{transform:scale(1);opacity:1} }
+@keyframes popIn { 0%{transform:scale(0)} 70%{transform:scale(1.15)} 100%{transform:scale(1)} }
+@keyframes confettiFall { 0%{transform:translateY(-30px) rotate(0deg);opacity:1} 100%{transform:translateY(110vh) rotate(720deg);opacity:0} }
+@keyframes pulseBeat { 0%,100%{transform:scale(1)} 50%{transform:scale(1.06)} }
+@keyframes shakeLR { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
+@keyframes glowDrop { 0%,100%{filter:drop-shadow(0 0 14px rgba(66,148,254,.45))} 50%{filter:drop-shadow(0 0 32px rgba(66,148,254,.85))} }
+
+/* Typewriter cursor blinking */
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+.typewriter-cursor { animation: blink 1s step-end infinite; }
+
+.fa{animation:floatY 3s ease-in-out infinite}
+.fa2{animation:floatYR 4s ease-in-out infinite}
+.su{animation:slideUp .5s ease-out both}
+.bi{animation:bounceIn .6s cubic-bezier(.34,1.56,.64,1) both}
+.pi{animation:popIn .4s cubic-bezier(.34,1.56,.64,1) both}
+.pu{animation:pulseBeat 2s ease-in-out infinite}
+.sk{animation:shakeLR .42s ease-in-out}
+.gd{animation:glowDrop 2.5s ease-in-out infinite}

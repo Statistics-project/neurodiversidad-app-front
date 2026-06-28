@@ -3,12 +3,13 @@ import React, { useState, useRef, useEffect } from 'react';
 import './LessonEngine.css';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
-import { solarSystemLesson } from './mockData.ts';
-import Sun from './sun.tsx';
-import Earth from './earth.tsx';
+import type { Lesson } from '../../types/lesson';
+import SunRotating from './sun.tsx';
+import EarthRotating from './earth.tsx';
 
 interface LessonEngineProps {
-  onFinish? : () => void;
+  lesson: Lesson;
+  onFinish?: () => void;
 }
 
 interface SceneCharacter {
@@ -21,28 +22,28 @@ interface SceneCharacter {
   props?: Record<string, any>;
 }
 
-export default function LessonEngine({ onFinish }: LessonEngineProps) {
+export default function LessonEngine({ lesson, onFinish }: LessonEngineProps) {
   const [currentSceneIdx, setCurrentSceneIdx] = useState(0);
   const [currentActionIdx, setCurrentActionIdx] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  const currentScene = solarSystemLesson.scenes[currentSceneIdx];
+  const currentScene = lesson.scenes[currentSceneIdx];
   const currentAction = currentScene.actions[currentActionIdx];
   const prevActionRef = useRef(currentAction);
 
 
   const characterRef = useRef<HTMLDivElement>(null);
   const componentMap: Record<string, React.FC<any>> = {
-    Sun: Sun,
-    Earth: Earth,
+    Sun: SunRotating,
+    Earth: EarthRotating,
     // Agrega otros componentes aquí si es necesario
   };
 
   const handleNext = () => {
     if (currentActionIdx < currentScene.actions.length - 1) {
       setCurrentActionIdx(currentActionIdx + 1);
-    } else if (currentSceneIdx < solarSystemLesson.scenes.length - 1) {
+    } else if (currentSceneIdx < lesson.scenes.length - 1) {
       setCurrentSceneIdx(currentSceneIdx + 1);
       setCurrentActionIdx(0);
     } else {
