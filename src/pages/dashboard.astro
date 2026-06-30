@@ -14,7 +14,7 @@ const sections = [
     desc: "¡Viaja más allá de las estrellas y descubre los secretos del universo!",
     media: astronomyVideo,
     bgColor: "bg-[#1e1b4b]", // Azul espacial oscuro
-    customClass: "rotate-90 scale-[1.77]"
+    customClass: "scale-[1.77]"
   },
   {
     id: "paleontologia",
@@ -81,7 +81,7 @@ const sections = [
           
           {/* ================= IMAGEN/VIDEO UNIFICADO ================= */}
           {/* Se eliminaron los hovers y se unificó la estructura para todos los videos */}
-          <div class="anim-image w-full md:w-2/5 flex justify-center items-center h-[60vh] md:h-[70vh]">
+          <div class="anim-image w-full md:w-2/5 flex justify-start items-center h-[60vh] md:h-[70vh]">
             <video
               id={`video-${section.id}`}
   src={section.media}
@@ -90,7 +90,7 @@ const sections = [
   muted
   playsinline
   class:list={[
-    "w-full h-full object-cover video-fade-top transform duration-1000",
+    "w-full h-full object-cover video-fade-right transform duration-1000",
     section.customClass
   ]}
             />
@@ -186,7 +186,7 @@ const sections = [
 
     .video-fade-right {
       -webkit-mask-image: linear-gradient(to right, black 90%, transparent 100%);
-      mask-image: linear-gradient(to right, black 90%, transparent 100%);
+      mask-image: linear-gradient(to right, black 80%, transparent 100%);
     }
   </style>
 
