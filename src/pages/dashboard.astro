@@ -1,94 +1,256 @@
 ---
 // src/pages/dashboard.astro
 import BaseLayout from "../layouts/BaseLayout.astro";
-import SectionCard from "../layouts/SectionCard.astro";
-import backgroundPaisaje1 from "../assets/background-paisaje1.jpeg";
-import astronomySectioncard from "../assets/astronomy-sectioncard.webp";
-import dinoSectioncard from "../assets/dino-sectioncard.webp";
-import scienceSectioncard from "../assets/science-sectioncard.webp";
 
-/**
- * DATA DE SECCIONES:
- * Para agregar un nuevo mundo (ej. Geografía), añade un objeto más a este array.
- * Asegúrate de que el 'theme' coincida con los definidos en token.css.
- */
-interface Section {
-  id: string;
-  title: string;
-  icon: string;
-  image: string;
-  theme: "astronomia" | "paleontologia" | "biologia";
-}
+// Assets (Preparados para recibir tus videos editados)
+import astronomyVideo from "../assets/astronomy-dashboard-video.mp4";
+import dinoVideo from "../assets/dinosaur-dashboard-video.mp4";
+import scienceVideo from "../assets/science-dashboard-video.mp4"; 
 
-const sections: Section[] = [
+const sections = [
   {
     id: "astronomia",
     title: "ASTRONOMÍA",
-    icon: "rocket",
-    image: astronomySectioncard.src,
-    theme: "astronomia",
+    desc: "¡Viaja más allá de las estrellas y descubre los secretos del universo!",
+    media: astronomyVideo,
+    bgColor: "bg-[#1e1b4b]", // Azul espacial oscuro
+    customClass: "rotate-90 scale-[1.77]"
   },
   {
     id: "paleontologia",
-    title: "",
-    icon: "bone",
-    image: dinoSectioncard.src,
-    theme: "paleontologia",
+    title: "PALEONTOLOGÍA",
+    desc: "¡Desentierra fósiles y camina junto a los gigantes del pasado!",
+    media: dinoVideo,
+    bgColor: "bg-[#e8a361]", // Terracota/Arena
+    customClass: "scale-[1.5] video-fade-right"
   },
   {
     id: "biologia",
     title: "BIOLOGÍA",
-    icon: "microscope",
-    image: scienceSectioncard.src,
-    theme: "biologia",
+    desc: "¡Explora el mundo microscópico y la magia de la vida!",
+    media: scienceVideo,
+    bgColor: "bg-[#064e3b]", // Verde bosque oscuro
+    customClass: ""
   },
 ];
 ---
 
-<BaseLayout title="CapyLearn - Dashboard">
-  <main class="relative min-h-screen">
-    <!-- FONDO CON BLUR:
-         Añadimos 'blur-[4px]' y un ligero 'scale-105' para evitar bordes blancos por el desenfoque.
-    -->
-    <div
-      class="fixed inset-0 z-0 bg-cover bg-center opacity-100 blur-[4px] scale-105"
-      style={`background-image: url(${backgroundPaisaje1.src});`}
-    >
-    </div>
+<BaseLayout title="CapyLearn - Explorador">
+  {/* FLECHAS DE NAVEGACIÓN (Solo en PC) */}
+  <button
+    id="btn-prev"
+    class="hidden md:flex absolute left-8 top-1/2 -translate-y-1/2 z-50 w-16 h-16 bg-white rounded-full border-4 border-black shadow-[6px_6px_0_0_#000] items-center justify-center hover:-translate-x-2 hover:scale-105 active:scale-95 active:shadow-[2px_2px_0_0_#000] transition-all cursor-pointer"
+  >
+    <i data-lucide="chevron-left" class="w-10 h-10 text-black"></i>
+  </button>
+  <button
+    id="btn-next"
+    class="hidden md:flex absolute right-8 top-1/2 -translate-y-1/2 z-50 w-16 h-16 bg-white rounded-full border-4 border-black shadow-[6px_6px_0_0_#000] items-center justify-center hover:translate-x-2 hover:scale-105 active:scale-95 active:shadow-[2px_2px_0_0_#000] transition-all cursor-pointer"
+  >
+    <i data-lucide="chevron-right" class="w-10 h-10 text-black"></i>
+  </button>
 
-    <!-- ELEMENTOS DECORATIVOS: Para quitar la sensación de "simple" -->
-    <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-      <div
-        class="absolute top-20 left-10 w-32 h-32 bg-white/20 rounded-full blur-3xl animate-pulse"
+  {/* PUNTITOS INDICADORES (PAGINACIÓN) */}
+  <div class="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex gap-4 pointer-events-auto">
+    {sections.map((_, index) => (
+      <button
+        class="nav-dot w-4 h-4 rounded-full border-2 border-black bg-white/50 shadow-[2px_2px_0_0_#000] transition-all duration-300 hover:scale-125"
+        data-index={index}
+        aria-label={`Ir a sección ${index + 1}`}
+      />
+    ))}
+  </div>
+
+  {/* CONTENEDOR PRINCIPAL */}
+  <main
+    id="slider-container"
+    class="relative h-screen w-full flex overflow-x-auto snap-x snap-mandatory scroll-smooth"
+  >
+    {sections.map((section, index) => (
+      <section
+        class={`slide-section relative w-full h-screen shrink-0 snap-center flex items-center justify-center p-6 md:p-24 overflow-hidden transition-colors duration-700 ${section.bgColor}`}
+        data-index={index}
       >
-      </div>
-      <div
-        class="absolute bottom-40 right-10 w-64 h-64 bg-yellow-400/10 rounded-full blur-3xl"
-      >
-      </div>
-      <!-- Puedes añadir SVGs de nubes o estrellas aquí para más estilo Kurzgesagt -->
-    </div>
+        {/* Patrón de fondo sutil */}
+        <div
+          class="absolute inset-0 opacity-10 pointer-events-none"
+          style="background-image: radial-gradient(#ffffff 2px, transparent 2px); background-size: 40px 40px;"
+        />
 
-    <!-- CONTENIDO PRINCIPAL: relative z-10 para estar por encima del fondo -->
-    <div class="relative z-10 max-w-7xl mx-auto p-8 lg:p-12">
-      <header class="mb-8 text-center">
-        <!-- Títulos con Drop Shadow sólido para legibilidad sobre fondo de imagen -->
-        <h1
-          class="text-7xl font-black text-white uppercase tracking-tighter drop-shadow-[0_5px_0_rgba(0,0,0,1)]"
-        >
-          Tu Mapa de <span class="text-[#4361EE]">Aventura</span>
-        </h1>
-        <p
-          class="text-2xl font-bold text-white mt-4 drop-shadow-[0_2px_0_rgba(0,0,0,1)]"
-        >
-          ¿Qué mundo vamos a explorar hoy?
-        </p>
-      </header>
+        <div class="relative z-10 w-full max-w-7xl flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
+          
+          {/* ================= IMAGEN/VIDEO UNIFICADO ================= */}
+          {/* Se eliminaron los hovers y se unificó la estructura para todos los videos */}
+          <div class="anim-image w-full md:w-2/5 flex justify-center items-center h-[60vh] md:h-[70vh]">
+            <video
+              id={`video-${section.id}`}
+  src={section.media}
+  autoplay
+  loop
+  muted
+  playsinline
+  class:list={[
+    "w-full h-full object-cover video-fade-top transform duration-1000",
+    section.customClass
+  ]}
+            />
+          </div>
 
-      <!-- GRID DE TARJETAS: Responsive (1 col en móvil, 3 en escritorio) -->
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
-        {sections.map((section) => <SectionCard section={section} />)}
-      </div>
-    </div>
+          <div class="w-full md:w-3/5 flex flex-col items-center md:items-start text-center md:text-left">
+            <h1 class="anim-title text-6xl md:text-[5.5rem] font-black text-white uppercase tracking-tighter drop-shadow-[0_6px_0_rgba(0,0,0,1)] leading-none mb-6">
+              {section.title}
+            </h1>
+            <p class="anim-desc text-xl md:text-2xl text-white/95 font-bold max-w-lg mb-12 drop-shadow-[0_3px_0_rgba(0,0,0,0.8)]">
+              {section.desc}
+            </p>
+            <a
+              href={`/contenidos/${section.id}`}
+              class="anim-button group relative inline-flex items-center justify-center bg-white border-4 border-black px-10 py-5 rounded-2xl shadow-[8px_8px_0_0_#000] hover:-translate-y-2 hover:shadow-[12px_12px_0_0_#000] active:translate-y-1 active:shadow-none transition-all cursor-pointer"
+            >
+              <span class="text-black font-black uppercase tracking-widest text-xl whitespace-nowrap">
+                ¡Jugar Ahora!
+              </span>
+              <i
+                data-lucide="play"
+                class="ml-4 w-6 h-6 text-black fill-black group-hover:translate-x-2 transition-transform"
+              />
+            </a>
+          </div>
+        </div>
+      </section>
+    ))}
   </main>
+
+  {/* ================= ESTILOS CSS ================= */}
+  <style>
+    #slider-container::-webkit-scrollbar {
+      display: none;
+    }
+    #slider-container {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Animaciones iniciales (ocultas) */
+    .anim-image {
+      opacity: 0;
+      transform: scale(0.8) translateY(50px);
+      transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .anim-title {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
+    }
+    .anim-desc {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
+    }
+    .anim-button {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
+    }
+
+    /* Estado ACTIVO */
+    .is-active .anim-image {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+    .is-active .anim-title {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .is-active .anim-desc {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .is-active .anim-button {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Estado de puntitos (Dots) */
+    .dot-active {
+      background-color: white !important;
+      transform: scale(1.3) !important;
+    }
+
+    /* Estilo de Fade Unificado (Bug de porcentajes corregido) */
+    .video-fade-top {
+      /* Ajusta el porcentaje (90%) para hacer el difuminado más grande o pequeño */
+      -webkit-mask-image: linear-gradient(to top, black 90%, transparent 100%);
+      mask-image: linear-gradient(to top, black 90%, transparent 100%);
+    }
+
+    .video-fade-right {
+      -webkit-mask-image: linear-gradient(to right, black 90%, transparent 100%);
+      mask-image: linear-gradient(to right, black 90%, transparent 100%);
+    }
+  </style>
+
+  {/* ================= SCRIPT INTERACTIVO ================= */}
+  <script is:inline>
+    document.addEventListener("DOMContentLoaded", () => {
+      const container = document.getElementById("slider-container");
+      const sections = document.querySelectorAll(".slide-section");
+      const dots = document.querySelectorAll(".nav-dot");
+      const btnNext = document.getElementById("btn-next");
+      const btnPrev = document.getElementById("btn-prev");
+      let currentIndex = 0;
+
+      // Intersection Observer para las animaciones y control nativo de los videos
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            const video = entry.target.querySelector("video");
+            
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-active");
+              currentIndex = parseInt(entry.target.dataset.index);
+              
+              // Actualizar dots
+              dots.forEach((d) => d.classList.remove("dot-active"));
+              if (dots[currentIndex]) dots[currentIndex].classList.add("dot-active");
+              
+              // Reproducir video si está pausado
+              if (video && video.paused) {
+                video.play();
+              }
+            } else {
+              entry.target.classList.remove("is-active");
+              
+              // Pausar video cuando sale de la pantalla para ahorrar recursos
+              if (video) {
+                video.pause();
+              }
+            }
+          });
+        },
+        { root: container, threshold: 0.6 },
+      );
+
+      sections.forEach((sec) => observer.observe(sec));
+
+      const scrollToIndex = (index) => {
+        if (index >= 0 && index < sections.length) {
+          sections[index].scrollIntoView({
+            behavior: "smooth",
+            block: "nearest",
+            inline: "center",
+          });
+        }
+      };
+
+      if (btnNext) btnNext.addEventListener("click", () => scrollToIndex(currentIndex + 1));
+      if (btnPrev) btnPrev.addEventListener("click", () => scrollToIndex(currentIndex - 1));
+
+      dots.forEach((dot, index) => {
+        dot.addEventListener("click", () => scrollToIndex(index));
+      });
+
+      if (window.lucide) window.lucide.createIcons();
+    });
+  </script>
 </BaseLayout>

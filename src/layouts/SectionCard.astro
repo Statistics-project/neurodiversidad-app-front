@@ -1,5 +1,7 @@
 ---
 // src/components/SectionCard.astro
+import Cohete from "../components/cohete1.astro";
+
 interface Section {
   id: string;
   title: string;
@@ -10,68 +12,72 @@ interface Section {
 
 interface Props {
   section: Section;
+  index: number; // Añadimos el index para saber si es par o impar
 }
 
-const { section } = Astro.props;
+const { section, index } = Astro.props;
 
-import Cohete from "../components/cohete1.astro";
+// Alternar dirección visual en pantallas grandes (Zig-Zag)
+const isEven = index % 2 === 0;
+const flexDirection = isEven ? "md:flex-row" : "md:flex-row-reverse";
 
-/**
- * CLASES DINÁMICAS:
- * Construye las clases de Tailwind usando el 'theme' de la sección.
- * Si cambias un color en token.css, se actualizará automáticamente aquí.
- */
 const themeClasses = {
   themeBg: `bg-${section.theme}-themeBg`,
-  headerBg: `bg-${section.theme}-headerBg`,
-  lineColor: `bg-${section.theme}-lineColor`,
-  cardBorder: `border-${section.theme}-cardBorder`,
   btnColor: `bg-${section.theme}-btnColor`,
-  btnBorder: `border-${section.theme}-btnBorder`,
   textColor: `text-${section.theme}-textColor`,
-  btnShadow: `shadow-btn-default shadow-${section.theme}-btnBorder`,
 };
+
+// Colores de fallback por si los tokens fallan (puedes ajustar esto a tus variables exactas)
+const cardColor = 
+  section.theme === 'astronomia' ? 'bg-[#4361EE]' : 
+  section.theme === 'paleontologia' ? 'bg-[#c26227]' : 'bg-[#10B981]';
 ---
 
-<!-- TARJETA PRINCIPAL: 
-     - hover:-translate-y-2: Efecto de elevación al pasar el mouse.
-     - shadow-[12px_12px_0_0_#000]: Sombra sólida estilo Kurzgesagt.
--->
 <a
   href={`/contenidos/${section.id}`}
-  class={`group relative rounded-[3rem] overflow-hidden border-8 border-black shadow-[12px_12px_0_0_#000] ${themeClasses.themeBg} flex flex-col h-112.5 transition-all hover:-translate-y-2 hover:shadow-[20px_20px_0_0_#000] active:translate-y-1 active:shadow-none`}
+  class={`group relative z-10 w-full flex flex-col ${flexDirection} items-center bg-white border-8 border-black rounded-[3rem] md:rounded-[4rem] p-4 md:p-6 shadow-[16px_16px_0_0_#000] hover:-translate-y-4 hover:shadow-[24px_24px_0_0_#000] active:translate-y-2 active:shadow-[8px_8px_0_0_#000] transition-all duration-300 gap-6`}
 >
-  <div class={`relative h-full overflow-hidden ${themeClasses.themeBg}`}>
-    <!-- IMAGEN: object-fit asegura que la imagen cubra el contenedor. group-hover:scale-110 hace zoom al acercar el mouse -->
+  
+  {/* MITAD 1: IMAGEN DEL MUNDO (Ahora ocupa casi el 50% de la cápsula) */}
+  <div class={`relative w-full md:w-1/2 aspect-video md:aspect-[4/3] rounded-[2rem] md:rounded-[3rem] border-8 border-black overflow-hidden ${cardColor} shadow-inner flex-shrink-0`}>
+    
     <img
       src={section.image}
-      alt={section.title}
+      alt={section.title || section.theme}
       class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
     />
 
-    <!-- COMPONENTE FLOTANTE: Solo para astronomía, centrado sobre la imagen -->
     {section.theme === 'astronomia' && (
-      <div class="absolute inset-0 flex items-center justify-center transition-transform duration-700 group-hover:scale-110 scale-75 pb-16 pointer-events-none">
+      <div class="absolute inset-0 flex items-center justify-center transition-transform duration-700 group-hover:scale-110 group-hover:translate-x-4 scale-75 pb-10 pointer-events-none drop-shadow-2xl">
         <Cohete />
       </div>
     )}
+  </div>
 
-    <!-- BOTÓN "EXPLORAR": Flota sobre la imagen como un sticker físico. -->
-    <div
-      class="absolute bottom-8 left-1/2 -translate-x-1/2 bg-white border-4 border-black px-6 py-3 rounded-2xl shadow-[6px_6px_0_0_#000] transform transition-transform group-hover:scale-110 group-hover:-rotate-2"
-    >
-      <span
-        class="text-black font-black uppercase tracking-widest text-sm whitespace-nowrap"
-      >
-        ¡Explorar ahora!
+  {/* MITAD 2: TEXTO Y LLAMADO A LA ACCIÓN */}
+  <div class="w-full md:w-1/2 flex flex-col justify-center items-center text-center p-6 md:p-10 space-y-6">
+    
+    {/* Icono flotante con Lucide */}
+    <div class="w-20 h-20 bg-gray-100 rounded-full border-4 border-black shadow-[4px_4px_0_0_#000] flex items-center justify-center -rotate-6 group-hover:rotate-12 transition-transform duration-300">
+      <i data-lucide={section.icon} class="w-10 h-10 text-black"></i>
+    </div>
+
+    {/* Título de la sección */}
+    <h2 class="text-4xl md:text-6xl font-black text-black uppercase tracking-tighter">
+      {section.title || section.theme}
+    </h2>
+
+    {/* Botón "Explorar" integrado (parece un sticker) */}
+    <div class={`mt-4 ${cardColor} border-4 border-black px-8 py-4 rounded-2xl shadow-[6px_6px_0_0_#000] transform transition-transform group-hover:scale-110 group-hover:-rotate-2`}>
+      <span class="text-white font-black uppercase tracking-widest text-lg md:text-xl whitespace-nowrap drop-shadow-[0_2px_0_rgba(0,0,0,1)]">
+        ¡Explorar Mundo!
       </span>
     </div>
 
-    <!-- ICONO DE PLAY: Aparece solo en hover para indicar interactividad -->
-    <div
-      class="absolute top-6 right-6 bg-white p-3 rounded-2xl border-4 border-black opacity-0 group-hover:opacity-100 transition-opacity shadow-[4px_4px_0_0_#000]"
-    >
-      <i data-lucide="play" class="w-6 h-6 text-black fill-black"></i>
-    </div>
+  </div>
+
+  {/* BADGE DE PLAY FLOTANTE (Solo hover) */}
+  <div class="absolute -top-6 -right-6 md:top-auto md:-right-8 md:bottom-1/2 bg-[#FFD60A] p-4 rounded-full border-8 border-black opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 shadow-[8px_8px_0_0_#000] z-20">
+    <i data-lucide="play" class="w-10 h-10 text-black fill-black ml-1"></i>
   </div>
 </a>
